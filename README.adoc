@@ -4,7 +4,7 @@ Usage of https://<canton>.impfung-covid.ch/ by canton visualized using https://w
 
 image::https://raw.githubusercontent.com/KasparJohannesSchneider/impfung_covid_ch/main/switzerland_impfung_covid_usage.svg[usage of impfung-covid.ch]
 
-== Requirements
+== ⚠ Requirements
 The following files (https://www.swisstopo.admin.ch/de/geodata/landscape/boundaries3d.html#download[available on swisstopo.admin.ch]) are required for this script to run:
 
     * swissBOUNDARIES3D_1_3_TLM_KANTONSGEBIET.cpg
