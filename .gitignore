@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# geo data files
+swissBOUNDARIES3D_1_3_TLM_KANTONSGEBIET.*
+
 # Distribution / packaging
 .Python
 build/
