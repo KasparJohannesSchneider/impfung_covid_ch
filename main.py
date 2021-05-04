@@ -1,13 +1,16 @@
-import geopandas
-import requests.exceptions
-
-import switzerland_db
+import csv
 import random
 import time
+from datetime import datetime
+from pathlib import Path
+
+import geopandas
+import requests.exceptions
+from matplotlib import pyplot as plt
 from requests import request
 from tqdm import tqdm
-from pathlib import Path
-from matplotlib import pyplot as plt
+
+import switzerland_db
 
 
 def main():
@@ -16,6 +19,9 @@ def main():
 
     # path of this file
     file_path = Path(__file__).parent
+
+    # csv file for logging the data over time
+    csv_path = file_path / 'usage_over_time.csv'
 
     # geo data files
     filename = 'swissBOUNDARIES3D_1_3_TLM_KANTONSGEBIET.'
@@ -65,6 +71,14 @@ def main():
     fig.savefig(file_path / 'switzerland_impfung_covid_usage.pdf')
     fig.savefig(file_path / 'switzerland_impfung_covid_usage.svg')
     fig.savefig(file_path / 'switzerland_impfung_covid_usage.png', dpi=600)
+
+    # logging the data
+    log = [str(cantons[key]['uses_site']) for key in cantons]
+    log = [datetime.now().strftime('%d %b %Y %H:%M'), *log]
+
+    with open(csv_path, 'a+', newline='') as csv_file:
+        csv_writer = csv.writer(csv_file, delimiter=',')
+        csv_writer.writerow(log)
 
 
 if __name__ == '__main__':
