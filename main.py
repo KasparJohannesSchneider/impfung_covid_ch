@@ -12,6 +12,8 @@ from tqdm import tqdm
 
 import switzerland_db
 
+debug_mode = False
+
 
 def main():
     # dictionary containing the cantons of switzerland
@@ -40,16 +42,17 @@ def main():
         cantons[canton]['df'] = switzerland_df[switzerland_df['NAME'] == cantons[canton]['name']]
 
     # test homepage
-    url = 'https://{}.impfung-covid.ch/'
-    for canton in tqdm(cantons, desc='http request'):
-        canton_url = url.format(canton)
-        try:
-            if request('GET', canton_url).__str__() == '<Response [200]>':
-                cantons[canton]['uses_site'] = True
-        except requests.exceptions.ConnectionError:
-            cantons[canton]['uses_site'] = False
-        wait_time = random.randint(3, 8)
-        time.sleep(wait_time)
+    if not debug_mode:
+        url = 'https://{}.impfung-covid.ch/'
+        for canton in tqdm(cantons, desc='http request'):
+            canton_url = url.format(canton)
+            try:
+                if request('GET', canton_url).__str__() == '<Response [200]>':
+                    cantons[canton]['uses_site'] = True
+            except requests.exceptions.ConnectionError:
+                cantons[canton]['uses_site'] = False
+            wait_time = random.randint(3, 8)
+            time.sleep(wait_time)
 
     # plot the reaults
     fig, ax = plt.subplots(figsize=(16, 9))
@@ -73,12 +76,13 @@ def main():
     fig.savefig(file_path / 'switzerland_impfung_covid_usage.png', dpi=150)
 
     # logging the data
-    log = [str(cantons[key]['uses_site']) for key in cantons]
-    log = [datetime.now().strftime('%d %b %Y %H:%M'), *log]
+    if not debug_mode:
+        log = [str(cantons[key]['uses_site']) for key in cantons]
+        log = [datetime.now().strftime('%d %b %Y %H:%M'), *log]
 
-    with open(csv_path, 'a+', newline='') as csv_file:
-        csv_writer = csv.writer(csv_file, delimiter=',')
-        csv_writer.writerow(log)
+        with open(csv_path, 'a+', newline='') as csv_file:
+            csv_writer = csv.writer(csv_file, delimiter=',')
+            csv_writer.writerow(log)
 
 
 if __name__ == '__main__':
