@@ -70,7 +70,7 @@ def main():
     # export figure
     fig.savefig(file_path / 'switzerland_impfung_covid_usage.pdf')
     fig.savefig(file_path / 'switzerland_impfung_covid_usage.svg')
-    fig.savefig(file_path / 'switzerland_impfung_covid_usage.png', dpi=600)
+    fig.savefig(file_path / 'switzerland_impfung_covid_usage.png', dpi=300)
 
     # logging the data
     log = [str(cantons[key]['uses_site']) for key in cantons]
