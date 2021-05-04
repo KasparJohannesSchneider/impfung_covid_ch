@@ -12,6 +12,7 @@ from tqdm import tqdm
 
 import switzerland_db
 
+# if True neither checks the websites nor logs the data
 debug_mode = False
 
 
@@ -65,9 +66,16 @@ def main():
         cantons[canton]['df'].plot(ax=ax, color=color, edgecolor='white')
 
     # format figure
-    ax.set_title('Usage of https://<canton>.impfung-covid.ch/', fontsize=32, fontweight='bold')
+    bbox = dict(boxstyle='round', facecolor='white', alpha=0.6)
+    ax.set_title('Usage of https://<canton>.impfung-covid.ch/', fontsize=32,
+                 fontweight='bold', bbox=bbox)
     fig.patch.set_visible(False)
     ax.axis('off')
+
+    # Add reference
+    ax.text(0.9, 0, 'geographical data by:\n©swisstopo', transform=ax.transAxes,
+            fontsize=14, verticalalignment='bottom', horizontalalignment='center', bbox=bbox)
+
     fig.show()
 
     # export figure
