@@ -5,11 +5,10 @@ from datetime import datetime
 from pathlib import Path
 
 import geopandas
-import requests.exceptions
 from matplotlib import pyplot as plt
-from requests import request
 from tqdm import tqdm
 
+import python_tools as pt
 import switzerland_db
 
 # if True neither checks the websites nor logs the data
@@ -44,18 +43,12 @@ def main():
 
     # test homepage
     if not debug_mode:
-        url = 'https://{}.impfung-covid.ch/'
         for canton in tqdm(cantons, desc='http request'):
-            canton_url = url.format(canton)
-            try:
-                if request('GET', canton_url).__str__() == '<Response [200]>':
-                    cantons[canton]['uses_site'] = True
-            except requests.exceptions.ConnectionError:
-                cantons[canton]['uses_site'] = False
+            cantons[canton]['uses_site'] = pt.is_page_up(f'https://{canton}.impfung-covid.ch/')
             wait_time = random.randint(3, 8)
             time.sleep(wait_time)
 
-    # plot the reaults
+    # plot the results
     fig, ax = plt.subplots(figsize=(16, 9))
 
     for canton in tqdm(cantons, desc='plot cantons'):
