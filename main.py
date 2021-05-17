@@ -26,8 +26,8 @@ def main():
     csv_path = file_path / 'usage_over_time.csv'
 
     # geo data files
-    filename = 'swissBOUNDARIES3D_1_3_TLM_KANTONSGEBIET.'
-    geo_data_files = {key: file_path / (filename + key) for key in ['shx', 'shp', 'dbf', 'cpg', 'prj']}
+    filename = 'swissBOUNDARIES3D_1_3_TLM_KANTONSGEBIET.{}'
+    geo_data_files = {key: file_path / (filename.format(key)) for key in ['shx', 'shp', 'dbf', 'cpg', 'prj']}
 
     # Check if required exist
     for file in geo_data_files:
